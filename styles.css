@@ -1,0 +1,18 @@
+* {
+    border: 1px solid black
+}
+
+#nav-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+}
+
+.nav-btn {
+    font-size: 25px;
+}
+
+.nav-btn:hover {
+    background-color: blue;
+}
