@@ -1,8 +1,8 @@
 const datasetInfo = {
     kickstarterPledges: {
         URL: 'https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/kickstarter-funding-data.json',
-        title: 'Treemap of kickstarter pledges',
-        description: 'Treemap of kickstarter pledges'
+        title: 'Treemap of Kickstarter pledges',
+        description: 'Treemap of Kickstarter pledges'
     },
     movieSales: {
         URL: 'https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/movie-data.json',
@@ -25,26 +25,6 @@ const navBtns = document.querySelectorAll('.nav-btn')
 
 let activeData = datasetInfo.kickstarterPledges
 
-navBtns.forEach( (navBtn) => navBtn.addEventListener('click', (btn) => {
-
-    switch (btn.target.id) {
-        case 'kickstarter-btn':
-            activeData = datasetInfo.kickstarterPledges
-            console.log(activeData)
-            break;
-
-        case 'movie-btn':
-            activeData = datasetInfo.movieSales
-            console.log('movie')
-            break;
-
-        case 'video-game-btn':
-            activeData = datasetInfo.videoGameSales
-            console.log('video games')
-            break;
-
-    } 
-}))
 
 d3.select('body')
     .append('h1')
@@ -55,6 +35,7 @@ d3.select('body')
     .append('h3')
     .attr('id', 'description')
     .text(`${activeData.description}`)
+
 
 d3.select('body')
     .append('g')
@@ -67,5 +48,56 @@ d3.select('body')
 
 const tooltip = d3.select('#tooltip')
 
-const h = 800
-const w = 1600
+d3.json(activeData.URL)
+    .then(data => {
+        console.log(data.children)
+
+        const h = 800
+        const w = 1600
+
+        const svg = d3.select('body')
+                        .append('svg')
+                        .attr('height', h)
+                        .attr('width', w)
+
+        const treemap = d3.treemap()
+                            .size(w, h)
+    
+        const root = d3.hierarchy(activeData)
+                            .sum(d => d.value)
+                            .sort((a, b) => b.value - a.value)
+
+
+    })
+
+
+
+
+
+
+
+
+navBtns.forEach( (navBtn) => navBtn.addEventListener('click', (btn) => {
+
+    switch (btn.target.id) {
+        case 'kickstarter-btn':
+            activeData = datasetInfo.kickstarterPledges
+            break;
+
+        case 'movie-btn':
+            activeData = datasetInfo.movieSales
+            break;
+
+        case 'video-game-btn':
+            activeData = datasetInfo.videoGameSales
+            break;
+
+    } 
+
+    d3.select('#description').text(`${activeData.description}`)
+    d3.select('#title').text(`${activeData.title}`)
+
+}))
+
+
+
