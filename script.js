@@ -59,7 +59,6 @@ const svg = d3.select('#treemap')
 
 d3.json(activeData.URL)
     .then(data => {
-        
 
         const root = d3.hierarchy(data)
                             .sum(d => {return d.value})
@@ -85,7 +84,16 @@ d3.json(activeData.URL)
             .attr('height', d => {return d.y1 - d.y0})
             .attr('width', d => {return d.x1 - d.x0})
             .style('fill', 'lightblue')
-
+            .on('mousemove', (event, d) => {
+                tooltip.style('opacity', .9)
+                tooltip.style('left', (event.pageX + 10) + 'px')
+                        .style('top', (event.pageY + 10) + 'px')
+                        .attr('data-value', d.data.value)
+                        .html(`Name: ${d.data.name} Category: ${d.data.category}}`)
+            })
+            .on('mouseout', () => {
+                tooltip.style('opacity', 0)
+            })
 
         svg.selectAll('text')
             .data(root.leaves())
@@ -94,6 +102,7 @@ d3.json(activeData.URL)
             .attr('x', d => {return d.x0 + 5})
             .attr('y', d => {return d.y0 + 15})
             .text(d => d.data.name)
+        
     })
 
 
@@ -118,6 +127,3 @@ navBtns.forEach( (navBtn) => navBtn.addEventListener('click', (btn) => {
     d3.select('#title').text(`${activeData.title}`)
 
 }))
-
-
-

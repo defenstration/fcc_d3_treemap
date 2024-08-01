@@ -17,7 +17,8 @@
     background-color: blue;
 }
 
-#tootip {
+#tooltip {
+    opacity: 0;
     position: absolute;
     background-color: blueviolet;
 }
