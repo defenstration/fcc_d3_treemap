@@ -16,3 +16,8 @@
 .nav-btn:hover {
     background-color: blue;
 }
+
+#tootip {
+    position: absolute;
+    background-color: blueviolet;
+}
