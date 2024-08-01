@@ -28,6 +28,27 @@ const margin = {top: 10, right: 10, bottom: 10, left: 10}
 
 let activeData = datasetInfo.kickstarterPledges
 
+const colors = d3.scaleOrdinal().range([
+    "#FF5733",
+    "#33FF57",
+    "#3357FF",
+    "#FF33A1",
+    "#A133FF",
+    "#FF8C33",
+    "#33FFD4",
+    "#8C33FF",
+    "#33A1FF",
+    "#D433FF",
+    "#FF3333",
+    "#33FF8C",
+    "#FF5733",
+    "#57FF33",
+    "#FF33FF",
+    "#33FFA1",
+    "#5733FF",
+    "#33FF33"
+]);
+
 
 d3.select('header')
     .append('h1')
@@ -49,6 +70,9 @@ d3.select('#treemap')
 
 
 const tooltip = d3.select('#tooltip')
+const legend = d3.select('#legend')
+                    .append('svg')
+
 
 const svg = d3.select('#treemap')
                 .append('svg')
@@ -83,7 +107,7 @@ d3.json(activeData.URL)
             .attr('y', d => {return d.y0})
             .attr('height', d => {return d.y1 - d.y0})
             .attr('width', d => {return d.x1 - d.x0})
-            .style('fill', 'lightblue')
+            .style('fill', d => colors(d.data.category))
             .on('mousemove', (event, d) => {
                 tooltip.style('opacity', .9)
                 tooltip.style('left', (event.pageX + 10) + 'px')
@@ -102,6 +126,17 @@ d3.json(activeData.URL)
             .attr('x', d => {return d.x0 + 5})
             .attr('y', d => {return d.y0 + 15})
             .text(d => d.data.name)
+
+        legend.selectAll('rect')
+                .data(root.leaves())
+                .enter()
+                .append('rect')
+                .attr('class', 'legend-item')
+                .attr('fill', d => colors(d))
+                .attr('height', 25)
+                .attr('width', 25)
+                .attr('x', (d, i) => Math.floor((i) / 3) * 50)
+                .attr('y', (d, i) => Math.floor((i) / 6) * 50)
         
     })
 
